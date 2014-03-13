@@ -81,5 +81,5 @@ void GamePlay::mouseRightClick()
 	_logPanel1->addNewLog("Creating A-star thread...");
 	ALLEGRO_THREAD *thr = al_create_thread(algo_thread, data);
 	al_start_thread(thr);
-	_logPanel1->addNewLog("A-star thread is running...");
+	_logPanel1->addNewLog("A-star thread is now running...");
 }
