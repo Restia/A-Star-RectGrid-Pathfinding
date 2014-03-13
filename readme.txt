@@ -1,0 +1,1 @@
+An implementation of A* algorithm for Pathfinding problem on Rectangular Grid.
