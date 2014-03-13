@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{B936C24B-DE91-4D48-B068-46C15F9E9A13}") = "rectgrid-pathfinding", "rectgrid-pathfinding\rectgrid-pathfinding.vcxproj", "{991C21CC-3A47-4EEB-9F50-CFCBDB6FF7DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{991C21CC-3A47-4EEB-9F50-CFCBDB6FF7DB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{991C21CC-3A47-4EEB-9F50-CFCBDB6FF7DB}.Debug|Win32.Build.0 = Debug|Win32
+		{991C21CC-3A47-4EEB-9F50-CFCBDB6FF7DB}.Release|Win32.ActiveCfg = Release|Win32
+		{991C21CC-3A47-4EEB-9F50-CFCBDB6FF7DB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
