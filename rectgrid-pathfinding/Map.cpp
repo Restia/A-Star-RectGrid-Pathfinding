@@ -45,13 +45,42 @@ void Map::resetMap()
 			if (_grid[i][j].getGridVal() != 0)
 			{
 				_grid[i][j].setStatus(0);
-				_grid[i][j].setGridVal(1);
+				if (_grid[i][j].getGridVal() == GRID_PATH)
+					_grid[i][j].setGridVal(GRID_FIELD);
 			}
+}
+
+void Map::reinit()
+{
+	for (int i = 0; i < _width; i++)
+		for (int j = 0; j < _height; j++)
+		{
+			_grid[i][j].setStatus(0);
+			_grid[i][j].setGridVal(1);
+		}
 }
 
 void Map::setGridVal(int w, int h, int val)
 {
 	_grid[w][h].setGridVal(val);
+}
+
+Grid* Map::getStartGrid()
+{
+	for (int i = 0; i < _width; i++)
+		for (int j = 0; j < _height; j++)
+			if (_grid[i][j].getGridVal() == GRID_START)
+				return &_grid[i][j];
+	return nullptr;
+}
+
+Grid* Map::getEndGrid()
+{
+	for (int i = 0; i < _width; i++)
+		for (int j = 0; j < _height; j++)
+			if (_grid[i][j].getGridVal() == GRID_END)
+				return &_grid[i][j];
+	return nullptr;
 }
 
 int Map::getGridVal(int w, int h)
@@ -86,7 +115,7 @@ Grid* Map::getNeighbor(Grid* current, int direction)
 	n_w = current->getGridCoord().X + _direction[direction*2];
 	n_h = current->getGridCoord().Y + _direction[direction*2 + 1];
 	if ( n_w < 0 || n_h < 0 || n_w >= _width || n_h >= _height 
-		|| _grid[n_w][n_h].getGridVal() == 0)
+		|| _grid[n_w][n_h].getGridVal() == GRID_WALL)
 		return nullptr;
 	else
 		return &_grid[n_w][n_h];
@@ -97,16 +126,20 @@ void Map::draw(int x0, int y0, GraphicsCore *gc)
 	for (int j = 0; j < _height; j++)
 		for (int i = 0; i < _width; i++)
 		{
-			if (_grid[i][j].getGridVal() == 1)
-				if (_grid[i][j].getStatus() == 0)
-					gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, al_map_rgb(0, 255, 255));
-				else if (_grid[i][j].getStatus() == 1)
-					gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, al_map_rgb(0, 0, 255));
-				else gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, al_map_rgb(255, 0, 255));
-			else if (_grid[i][j].getGridVal() == 0)
-				gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, al_map_rgb(160, 160, 160));
-			else // if (_grid[i][j].getGridVal() == 10)
-				gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, al_map_rgb(0, 204, 102));
+			if (_grid[i][j].getGridVal() == GRID_FIELD)
+				if (_grid[i][j].getStatus() == GRID_STATUS_FREE)
+					gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, COLOR_FIELD_GRID);
+				else if (_grid[i][j].getStatus() == GRID_STATUS_OPEN)
+					gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, COLOR_OPEN_GRID);
+				else gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, COLOR_CLOSED_GRID);
+			else if (_grid[i][j].getGridVal() == GRID_WALL)
+				gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, COLOR_WALL_GRID);
+			else if (_grid[i][j].getGridVal() == GRID_END)
+				gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, COLOR_END_GRID);
+			else if (_grid[i][j].getGridVal() == GRID_START)
+				gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, COLOR_START_GRID);
+			else if (_grid[i][j].getGridVal() == GRID_PATH)
+				gc->fillRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, COLOR_PATH);
 			gc->drawRect(x0 + i*GRID_SIZE, y0 + j*GRID_SIZE, GRID_SIZE, al_map_rgb(0, 0, 0), 1);
 		}
 }

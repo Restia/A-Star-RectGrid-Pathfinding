@@ -51,8 +51,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;ALLEGRO_STATICLINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\allegro\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,10 +81,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="A-star.cpp" />
+    <ClCompile Include="Animater.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="GraphicsCore.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="GridFillAnimater.cpp" />
     <ClCompile Include="LogPanels.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -92,11 +96,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="A-star.h" />
+    <ClInclude Include="Animater.h" />
+    <ClInclude Include="AnimationTracker.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="GraphicsConst.h" />
     <ClInclude Include="GraphicsCore.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="GridFillAnimater.h" />
     <ClInclude Include="LogsPanel.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MinHeap.h" />

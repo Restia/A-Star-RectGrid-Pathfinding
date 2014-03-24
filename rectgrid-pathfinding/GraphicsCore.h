@@ -26,6 +26,9 @@ private:
 	bool					_XButtonDown;
 	int						_mouseX;
 	int						_mouseY;
+	int						_mouseButton;
+	bool					_mouseisDragging;
+
 
 public:
 	GraphicsCore();
@@ -42,7 +45,10 @@ public:
 
 	// Event Function
 	virtual void mouseLeftClick() = 0;
+	virtual void mouseLeftRelease() = 0;
 	virtual void mouseRightClick() = 0;
+	virtual void mouseDrag() = 0;
+	virtual void mouseMove() = 0;
 
 	// Drawing functions
 	void drawRect(int x, int y, int size, ALLEGRO_COLOR color, int thickness);
@@ -55,6 +61,7 @@ public:
 
 	int getMouseX();
 	int getMouseY();
+	int getMouseButton();
 	long getCurrentTimeMillis();
 	bool isDown(int keycode);
 	bool needToClose();

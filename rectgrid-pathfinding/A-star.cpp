@@ -4,39 +4,43 @@ Astar::Astar(Map *refMap, LogsPanel *refLogPanel)
 {
 	_refMap = refMap;
 	_refLogPanel = refLogPanel;
+	_heuristicFunc = 1;		// Manhattan
+}
+
+void Astar::setHeuristicFunc(int num)
+{
+	_heuristicFunc = num;
 }
 
 double Astar::heuristicFunction(Grid current, Grid target)
 {
 	double tmp = 0.0f;
 	// Manhattan Distance
-	
-	tmp = abs(target.getGridCoord().Y - current.getGridCoord().Y) + 
-		abs(target.getGridCoord().X - current.getGridCoord().X);
-    
-	// Euclidean Distance
-	/*
-	tmp = sqrt((target.getGridCoord().Y - current.getGridCoord().Y)*(target.getGridCoord().Y - current.getGridCoord().Y) +
-		(target.getGridCoord().X - current.getGridCoord().X)*(target.getGridCoord().X - current.getGridCoord().X));
-		*/
+	if (_heuristicFunc == 1)
+		tmp = abs(target.getGridCoord().Y - current.getGridCoord().Y) + 
+			abs(target.getGridCoord().X - current.getGridCoord().X);
+	else tmp = sqrt((target.getGridCoord().Y - current.getGridCoord().Y)*(target.getGridCoord().Y - current.getGridCoord().Y) +
+			(target.getGridCoord().X - current.getGridCoord().X)*(target.getGridCoord().X - current.getGridCoord().X)); // Euclidean
+
 	return tmp;
 }
 
 int rebuildPath(Grid *start, Grid *end)
 {
-	end->setGridVal(10);
+	if (end->getGridVal() != GRID_END && end->getGridVal() != GRID_START)
+		end->setGridVal(GRID_PATH);
 	if (start == end)
 		return 0;
 	else return (1 + rebuildPath(start, end->getParent()));
 }
 
- struct compare  
- {  
-   bool operator()(Grid* l, Grid* r)  
-   {  
-       return (l->getF() > r->getF());  
-   }  
- };  
+struct compare  
+{  
+	bool operator()(Grid* l, Grid* r)  
+	{  
+		return (l->getF() > r->getF());  
+	}  
+};  
 
 bool Astar::findPath(Grid *start, Grid *end)
 {
@@ -59,7 +63,7 @@ bool Astar::findPath(Grid *start, Grid *end)
 	std::priority_queue<Grid*, std::vector<Grid*>, compare > *open_list = new std::priority_queue<Grid*, std::vector<Grid*>, compare >();
 	// std::vector<Grid*> *close_list = new std::vector<Grid*>();
 
-	start->setStatus(IN_OPEN);
+	start->setStatus(GRID_STATUS_OPEN);
 	start->setG(0.0f);
 	double t = heuristicFunction(*start, *end);
 	start->setH(t);
@@ -79,7 +83,7 @@ bool Astar::findPath(Grid *start, Grid *end)
 		}
 		current = open_list->top();
 		open_list->pop();
-		current->setStatus(IN_CLOSE);
+		current->setStatus(GRID_STATUS_CLOSE);
 		str = "Switched [";
 		str = str + std::to_string(current->getGridCoord().X) + "; " + std::to_string(current->getGridCoord().Y) + "] to CLOSE_LIST.";
 		_refLogPanel->addNewLog(str.c_str());
@@ -101,13 +105,13 @@ bool Astar::findPath(Grid *start, Grid *end)
 		{
 			Grid* neighbor = _refMap->getNeighbor(current, d);
 			if (neighbor != nullptr)
-				if (neighbor->getStatus() != IN_CLOSE)
+				if (neighbor->getStatus() != GRID_STATUS_CLOSE)
 				{
 					// Neu o nay chua o trong open_list
-					if (neighbor->getStatus() != IN_OPEN)
+					if (neighbor->getStatus() != GRID_STATUS_OPEN)
 					{
 						// Cho no vao open_list, tinh G, H
-						neighbor->setStatus(IN_OPEN);
+						neighbor->setStatus(GRID_STATUS_OPEN);
 						neighbor->setG(current->getG() + 1.0f);
  						double tmp = heuristicFunction(*neighbor, *end);
 						neighbor->setH(tmp);

@@ -17,9 +17,12 @@ public:
 	~Map();
 
 	void resetMap();
+	void reinit();
 	void setGridVal(int w, int h, int val);
 
 	int getGridVal(int w, int h);
+	Grid* getStartGrid();
+	Grid* getEndGrid();
 	int getWidth();
 	int getHeight();
 	Grid* getGrid(int w, int h);

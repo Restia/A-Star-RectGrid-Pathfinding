@@ -60,6 +60,8 @@ GraphicsCore::GraphicsCore()
 	}
 
 	_XButtonDown = false;
+	_mouseisDragging = false;
+	_mouseButton = 0;
 }
 
 GraphicsCore::~GraphicsCore()
@@ -111,12 +113,23 @@ void GraphicsCore::refresh()
 		case ALLEGRO_EVENT_MOUSE_AXES:
 			_mouseX = ev.mouse.x;
 			_mouseY = ev.mouse.y;
+			mouseMove();
+			if (_mouseisDragging)
+				mouseDrag();
 			break;
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+			_mouseisDragging = true;
+			_mouseButton = ev.mouse.button;
 			if (ev.mouse.button == 1)
 				mouseLeftClick();
 			else if (ev.mouse.button == 2)
 				mouseRightClick();
+			break;
+		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+			_mouseisDragging = false;
+			_mouseButton = 0;
+			if (ev.mouse.button == 1)
+				mouseLeftRelease();
 			break;
 		}
 	}
@@ -166,6 +179,11 @@ int GraphicsCore::getMouseX()
 int GraphicsCore::getMouseY()
 {
 	return _mouseY;
+}
+
+int GraphicsCore::getMouseButton()
+{
+	return _mouseButton;
 }
 
 long GraphicsCore::getCurrentTimeMillis()
